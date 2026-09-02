@@ -16,5 +16,27 @@ pipeline{
 					sh 'docker compose up -d'
 				}
 			}
+                        stage('Health check green'){
+				steps{
+					sh 'docker compose exec nginx wget -qo- http://green:5000/health
+				}
+			}
+			stage('Switch containers'){
+				steps{
+					sh '''
+						sed -i |proxy_path http://blue:5000|proxy_path http://green/ nginx/nginx.conf
+						docker exec nginx nginx -s reload
+					'''
+				 }
+			}
+		}
+
+		post{
+			success{
+				echo 'Green deployment successful'
+			}
+			failure{
+				echo 'Deployment failed'
+			}
 		}
 }

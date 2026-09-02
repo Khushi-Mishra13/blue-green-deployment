@@ -25,7 +25,7 @@ pipeline{
 				steps{
 					sh '''
 						sed -i 's|proxy_pass http://blue:5000|proxy_pass http://green|' nginx/nginx.conf
-						docker exec nginx nginx -s reload
+						docker exec 55fa29eb531e nginx -s reload
 					'''
 				 }
 			}

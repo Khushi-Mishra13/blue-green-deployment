@@ -18,7 +18,7 @@ pipeline{
 			}
                         stage('Health check green'){
 				steps{
-					sh 'docker compose exec nginx wget -qo- http://green:5000/health'
+					sh 'docker compose exec nginx wget -qO- http://green:5000/health'
 				}
 			}
 			stage('Switch containers'){

@@ -24,7 +24,7 @@ pipeline{
 			stage('Switch containers'){
 				steps{
 					sh '''
-						docker exec 55fa29eb531e nginx -s reload
+						docker compose exec blue-green-deployment-green-1 nginx -s reload
 					'''
 				 }
 			}

@@ -24,7 +24,6 @@ pipeline{
 			stage('Switch containers'){
 				steps{
 					sh '''
-						sed -i 's|proxy_pass http://blue:5000|proxy_pass http://green:5000|' nginx/nginx.conf
 						docker exec 55fa29eb531e nginx -s reload
 					'''
 				 }

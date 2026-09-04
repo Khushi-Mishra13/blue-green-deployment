@@ -29,11 +29,12 @@ pipeline{
 			                usernameVariable: 'username',
 			                passwordVariable: 'password' 
 			            )
-			        ])
+			        ]) {
 			        sh '''
 			            echo "$password" | docker login ghcr.io -u "$username" --password-stdin
 			            docker push ghcr.io/khushi-mishra13/blue-green-deployment:latest
 			        '''
+					}
 			    }
 			}
 			
@@ -48,8 +49,9 @@ pipeline{
 			                usernameVariable: 'username',
 			                passwordVariable: 'password'
 			            )
-			        ])
+			        ]){
 			        sh 'echo "$password" | docker login ghcr.io -u "$username" --password-stdin'
+					}
 			    }
 			}
 
@@ -63,9 +65,9 @@ pipeline{
 							remote.host = "192.168.7.102"
 
 						)
-					])
+					]) {
 					sh 'docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest'
-					
+					}
 				}
 			}
 			stage('Run Container'){
@@ -76,13 +78,13 @@ pipeline{
 							username:'Khushi-Mishra13',
 							passwordVariable:'password',
 							remote.host = "192.168.7.102"
-
 						)
-					])
+					]) {
 					sh 'docker run -d -p 8081:5000 -ghcr.io/khushi-mishra13/blue-green-deployment:latest'
+					}
 				}
 			}
-                        stage('Health check green'){
+            stage('Health check green'){
 				steps{
 					sh 'docker compose exec nginx wget -qO- http://green:5000/health'
 				}

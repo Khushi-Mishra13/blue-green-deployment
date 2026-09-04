@@ -43,12 +43,11 @@ pipeline{
 				steps{
 					withCredentials([
 						usernamePassword(
-							credentialsId:'github-token-id',
-							username:'Khushi-Mishra13',
-							passwordVariable: 'password',
-							remote.host = "192.168.7.102"
-
-						)
+			                credentialsId: 'github-token-id',
+			                usernameVariable: 'username',
+			                passwordVariable: 'password',
+							remote.host: '192.168.7.102'
+			            )
 					]) {
 					sh '''
 					    echo "$password" | docker login ghcr.io -u "$username" --password-stdin

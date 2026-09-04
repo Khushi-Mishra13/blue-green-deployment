@@ -38,52 +38,27 @@ pipeline{
 			    }
 			}
 			
-			stage('Login to ghcr'){
-			    steps {
-			        // Note: If you need to run this on a remote host, 
-			        // you should wrap this stage or step inside an `sshagent` or a remote execution plugin, 
-			        // as you cannot assign 'remote.host' inside the usernamePassword block.
-			        withCredentials([
-			            usernamePassword(
-			                credentialsId: 'github-token-id',
-			                usernameVariable: 'username',
-			                passwordVariable: 'password'
-			            )
-			        ]){
-			        sh 'echo "$password" | docker login ghcr.io -u "$username" --password-stdin'
-					}
-			    }
-			}
 
-			stage('pull in remote server'){
+			stage('Deploying On VM'){
 				steps{
 					withCredentials([
 						usernamePassword(
 							credentialsId:'github-token-id',
 							username:'Khushi-Mishra13',
-							passwordVariable:password,
+							passwordVariable: 'password',
 							remote.host = "192.168.7.102"
 
 						)
 					]) {
-					sh 'docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest'
+					sh '''
+					    echo "$password" | docker login ghcr.io -u "$username" --password-stdin
+						docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest
+						docker run -d -p 8081:5000 -ghcr.io/khushi-mishra13/blue-green-deployment:latest
+					'''
 					}
 				}
 			}
-			stage('Run Container'){
-				steps{
-					withCredentials([
-						usernamePassword(
-							credentialsId:'khushi-vm',
-							username:'Khushi-Mishra13',
-							passwordVariable:'password',
-							remote.host = "192.168.7.102"
-						)
-					]) {
-					sh 'docker run -d -p 8081:5000 -ghcr.io/khushi-mishra13/blue-green-deployment:latest'
-					}
-				}
-			}
+			
             stage('Health check green'){
 				steps{
 					sh 'docker compose exec nginx wget -qO- http://green:5000/health'

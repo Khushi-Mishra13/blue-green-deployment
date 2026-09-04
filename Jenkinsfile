@@ -51,7 +51,7 @@ pipeline{
 					sh '''
 					    echo "$password" | docker login ghcr.io -u "$username" --password-stdin
 						docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest
-						docker run -d -p 8081:5000 -ghcr.io/khushi-mishra13/blue-green-deployment:latest
+						docker run -d -p 8081:5000 ghcr.io/khushi-mishra13/blue-green-deployment:latest
 					'''
 					}
 				}

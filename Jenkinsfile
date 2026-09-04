@@ -49,7 +49,7 @@ pipeline{
 									
 									docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest
 									docker run -d --name blue-app -p 8081:5000 ghcr.io/khushi-mishra13/blue-green-deployment:latest
-								EOF
+EOF
 						'''
 						}
 					}

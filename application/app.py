@@ -1,4 +1,4 @@
-import os
+'''import os
 from flask import Flask
 
 app = Flask(__name__)
@@ -14,4 +14,4 @@ def health():
 	return "This page is halthy"
 
 if __name__ == "__main__" :
-	app.run("0.0.0.0", port=5000)
+	app.run("0.0.0.0", port=5000)'''

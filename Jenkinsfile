@@ -48,7 +48,7 @@ pipeline{
 									docker rm -f blue-app || true
 									
 									docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest
-									docker run -d --name blue-app -p 8081:5000 -e VERSION = Blue-V1 ghcr.io/khushi-mishra13/blue-green-deployment:latest
+									docker run -d --name blue-app -p 8081:5000 -e VERSION=Blue-V1 ghcr.io/khushi-mishra13/blue-green-deployment:latest
 EOF
 						'''
 						}

@@ -17,7 +17,7 @@ pipeline{
         			remote.identityFile = identity
         			stage("SSH Steps Rocks!")
 					sh 'docker compose build' */
-					sh 'docker build -t ghcr.io/khushi-mishra13/blue-green-deployment:latest'
+					sh 'docker build -t ghcr.io/khushi-mishra13/blue-green-deployment:latest .'
 				}
 			}
 			stage('push it to ghcr'){

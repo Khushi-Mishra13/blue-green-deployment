@@ -16,8 +16,7 @@ pipeline{
 					sshagent(credentials: ['khushi-vm']) {
 						sh '''
 						    [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-          					ssh-keyscan -t rsa,dsa khushi-vm >> ~/.ssh/known_hosts
-						    ssh -p 5125 khushi@khushi-vm
+						    ssh -p 5125 khushi@192.168.7.102
 					  '''
 					}
 				}

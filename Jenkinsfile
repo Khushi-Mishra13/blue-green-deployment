@@ -11,6 +11,13 @@ pipeline{
 					sh 'docker compose build'
 				}
 			}
+			stage('Testing SSH Connection'){
+				steps{
+					sshagent(credentials: ['khushi-vm']) {
+						echo "text > user.txt"
+					}
+				}
+			}
 			stage('Run Container'){
 				steps{
 					sh 'docker compose up -d'

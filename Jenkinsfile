@@ -14,7 +14,11 @@ pipeline{
 			stage('Testing SSH Connection'){
 				steps{
 					sshagent(credentials: ['khushi-vm']) {
-						echo "text > user.txt"
+						sh '''
+						    [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+          					ssh-keyscan -t rsa,dsa khushi-vm >> ~/.ssh/known_hosts
+						    ssh -p 5125 khushi@khushi-vm
+					  '''
 					}
 				}
 			}

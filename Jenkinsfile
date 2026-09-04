@@ -1,7 +1,7 @@
-def remote = [:]
-remote.name = "khushi-vm"
-remote.host = "192.168.7.102"
-remote.allowAnyHosts = true
+//def remote = [:]
+//remote.name = "khushi-vm"
+//remote.host = "192.168.7.102"
+//remote.allowAnyHosts = true
 pipeline{
 	agent any
 		stages{
@@ -48,16 +48,6 @@ pipeline{
 					sh 'docker login ghcr.io'
 				}
 			}
-			/*stage('Testing SSH Connection'){
-				steps{
-					sshagent(credentials: ['khushi-vm']) {
-						sh '''
-						   [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-					ssh -p 5125 khushi@192.168.7.102
-					'''
-					}
-				}
-			} */
 			stage('pull in remote server'){
 				steps{
 					withCredentials([

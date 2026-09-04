@@ -1,7 +1,8 @@
-//def remote = [:]
-//remote.name = "khushi-vm"
-//remote.host = "192.168.7.102"
-//remote.allowAnyHosts = true
+def remote = [:]
+remote.name = "khushi-vm"
+remote.host = "192.168.7.102"
+remote.allowAnyHosts = true
+
 pipeline{
 	agent any
 		stages{
@@ -30,7 +31,10 @@ pipeline{
 
 						)
 					])
-					sh 'docker push ghcr.io/khushi-mishra13/blue-green-deployment:latest'
+					sh '''
+					    echo $passwordVariable | docker login ghcr.io -u $username --password-stdin
+						docker push ghcr.io/khushi-mishra13/blue-green-deployment:latest
+					'''
 				}
 			}
 			
@@ -45,7 +49,7 @@ pipeline{
 
 						)
 					])
-					sh 'docker login ghcr.io'
+					sh 'echo $passwordVariable | docker login ghcr.io -u $username --password-stdin'
 				}
 			}
 			stage('pull in remote server'){

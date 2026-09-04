@@ -22,35 +22,37 @@ pipeline{
 				}
 			}
 			stage('push it to ghcr'){
-				steps{
-					withCredentials([
-						usernamePassword(
-							credentialsId:'github-token-id',
-							username:'Khushi-Mishra13',
-							passwordVariable: 'password',
-						)
-					])
-					sh '''
-					    echo $passwordVariable | docker login ghcr.io -u $username --password-stdin
-						docker push ghcr.io/khushi-mishra13/blue-green-deployment:latest
-					'''
-				}
+			    steps {
+			        withCredentials([
+			            usernamePassword(
+			                credentialsId: 'github-token-id',
+			                usernameVariable: 'username',
+			                passwordVariable: 'password' 
+			            )
+			        ])
+			        sh '''
+			            echo "$password" | docker login ghcr.io -u "$username" --password-stdin
+			            docker push ghcr.io/khushi-mishra13/blue-green-deployment:latest
+			        '''
+			    }
 			}
 			
 			stage('Login to ghcr'){
-				steps{
-					withCredentials([
-						usernamePassword(
-							credentialsId:'github-token-id',
-							username:'Khushi-Mishra13',
-							passwordVariable: 'password',
-							remote.host = "192.168.7.102"
-
-						)
-					])
-					sh 'echo $passwordVariable | docker login ghcr.io -u $username --password-stdin'
-				}
+			    steps {
+			        // Note: If you need to run this on a remote host, 
+			        // you should wrap this stage or step inside an `sshagent` or a remote execution plugin, 
+			        // as you cannot assign 'remote.host' inside the usernamePassword block.
+			        withCredentials([
+			            usernamePassword(
+			                credentialsId: 'github-token-id',
+			                usernameVariable: 'username',
+			                passwordVariable: 'password'
+			            )
+			        ])
+			        sh 'echo "$password" | docker login ghcr.io -u "$username" --password-stdin'
+			    }
 			}
+
 			stage('pull in remote server'){
 				steps{
 					withCredentials([

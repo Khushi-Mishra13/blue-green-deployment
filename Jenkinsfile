@@ -45,8 +45,7 @@ pipeline{
 						usernamePassword(
 			                credentialsId: 'github-token-id',
 			                usernameVariable: 'username',
-			                passwordVariable: 'password',
-							remote.host: '192.168.7.102'
+			                passwordVariable: 'password'
 			            )
 					]) {
 					sh '''

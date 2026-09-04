@@ -30,7 +30,7 @@ pipeline{
 
 						)
 					])
-					sh 'docker push ghcr.io/khushi-mishra13/blue-green-deploymnet:latest'
+					sh 'docker push ghcr.io/khushi-mishra13/blue-green-deployment:latest'
 				}
 			}
 			

@@ -1,6 +1,8 @@
 def remote = [:]
 remote.name = "khushi-vm"
+remote.user = "khushi"
 remote.host = "192.168.7.102"
+remote.port - '5125'
 remote.allowAnyHosts = true
 
 pipeline{
@@ -40,19 +42,27 @@ pipeline{
 			
 
 			stage('Deploying On VM'){
-				steps{
-					withCredentials([
-						usernamePassword(
-			                credentialsId: 'github-token-id',
-			                usernameVariable: 'username',
-			                passwordVariable: 'password'
-			            )
-					]) {
+				steps {
+			        // Nest withCredentials inside sshagent (or vice-versa), removing the comma
+			        sshagent(credentials: ['khushi-vm']) {
+			            withCredentials([
+			                usernamePassword(
+			                    credentialsId: 'github-token-id',
+			                    usernameVariable: 'username',
+			                    passwordVariable: 'password'
+			                )
+			            ]) {
 					sh '''
-					    echo "$password" | docker login ghcr.io -u "$username" --password-stdin
-						docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest
-						docker run -d -p 8081:5000 ghcr.io/khushi-mishra13/blue-green-deployment:latest
-					'''
+                    ssh -o StrictHostKeyChecking=no -p 5125 khushi@192.168.7.102 << EOF
+                        echo "$password" | docker login ghcr.io -u "$username" --password-stdin
+                        
+                        # Stop and remove existing container if it exists to avoid port conflicts
+                        docker rm -f blue-app || true
+                        
+                        docker pull ghcr.io/khushi-mishra13/blue-green-deployment:latest
+                        docker run -d --name blue-app -p 8081:5000 ghcr.io/khushi-mishra13/blue-green-deployment:latest
+EOF
+                '''
 					}
 				}
 			}

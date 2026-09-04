@@ -1,7 +1,7 @@
 services:
   blue:
     build:
-      context: ./application
+      context: .
     networks: 
       - app-network
     environment:
@@ -9,7 +9,7 @@ services:
 
   green:
     build:
-      context: ./application
+      context: .
     networks: 
       - app-network
     environment:
